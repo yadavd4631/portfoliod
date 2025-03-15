@@ -4,13 +4,17 @@ import { motion } from 'framer-motion';
 
 export default function Skills() {
   const skills = [
-    { skill: "TailwindCSS" },
     { skill: "Javascript" },
     { skill: "React" },
+    { skill: "Redux" },
+    { skill: "REST APIs" },
     { skill: "MongoDB" },
-    { skill: "Git" },
+    { skill: "TailwindCSS" },
+    { skill: "GitHub" },
     { skill: "VS Code" },
-    
+    { skill: "Problem-Solving" },
+    { skill: "Analytical Thinking" },
+    { skill: "Team Collaboration" },
   ];
   return (
     <motion.div

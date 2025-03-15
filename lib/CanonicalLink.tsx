@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 const CanonicalLink = () => {
   const pathname = usePathname();
-  const canonicalUrl = `https://www.pankajk.tech${pathname}`;
+  const canonicalUrl = `https://portfolioreactd.netlify.app/${pathname}`;
 
   useEffect(() => {
     const link: HTMLLinkElement | null = document.querySelector(
