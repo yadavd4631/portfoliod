@@ -25,7 +25,7 @@ const Socials = [
   },
   {
     name: "Resume",
-    url: "https://drive.google.com/file/d/1vN0kugh35TcN2Nn7HNYTT9RhKTYuqhGy/view?usp=drive_link",
+    url: "https://drive.google.com/file/d/15AHWogx74abj0ySQ1ym-OAMwqGflsMzu/view?usp=drive_link",
     icon: FaFileAlt,
   },
 ];
@@ -88,10 +88,19 @@ export default function AboutSection() {
             applications.
           </li>
           <li>
-            I previously worked as an Elite Project Analyst at Hudl, where I
-            analyzed ice hockey matches using video footage, focusing on player
-            performance, fouls, and key moments. This experience honed my
-            analytical skills and attention to detail.
+            Previously, I worked as an Elite Projects Analyst at Instat IH
+            (04/2024 - 12/2024)
+            <br />
+            Where I handled comprehensive front-end responsibilities.
+            <br />
+            Maintaining and updating the sports website with real-time match
+            schedules and detailed player profiles.
+            <br />
+            Developing responsive user interfaces and integrating data using
+            React.js, JavaScript, HTML, and CSS. <br />
+            Troubleshooting UI issues, optimizing data flow, and collaborating
+            with backend and design teams to refine the website's performance
+            and presentation.
           </li>
           <li>
             I am actively looking for opportunities as a Frontend Developer
