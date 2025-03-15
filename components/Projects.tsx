@@ -16,17 +16,14 @@ const projects = [
     ],
     github: "https://github.com/yadavd4631/chat-app",
     live: "https://github.com/yadavd4631/Chatapp",
-    
   },
   {
     title: "Music Streaming Website",
     description:
       "This project is built using React.js and Tailwind CSS with static data. It allows users to play songs online with a built-in music player. The app includes custom music controls for playing, pausing, and skipping tracks. It features a responsive and clean UI, designed with Tailwind CSS for a smooth user experience.",
-    tech: ["React.js",
-       "TailwindCSS"],
+    tech: ["React.js", "TailwindCSS"],
     github: "https://github.com/yadavd4631/Spotify-Clone",
-    live: "https://github.com/yadavd4631/Spotify-Clone",
-    
+    live: "https://musicspotifyclone.vercel.app/",
   },
 ];
 
