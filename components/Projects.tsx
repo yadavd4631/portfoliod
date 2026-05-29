@@ -1,81 +1,88 @@
 'use client';
 import { motion } from 'framer-motion';
+import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 
 const projects = [
   {
-    title: "Real-Time Chat Application – React.js, Firebase, Open AI",
+    title: "Asterisks — Gym Management SaaS",
     description:
-      "Developed a React.js-based chat app with real-time messaging, user authentication, and image sharing using Firebase (Authentication, Firestore, Storage). Enhanced with Open AI API for an interactive chatbot to handle user queries. Designed a responsive UI with CSS Flexbox.",
-
-    tech: [
-      "React.js",
-      "Firebase (Authentication, Firestore, Storage)",
-      "CSS",
-      "Open AI API",
-      "TailwindCSS",
-    ],
-    github: "https://github.com/yadavd4631/chat-app",
-    live: "https://github.com/yadavd4631/Chatapp",
-  },
-  {
-    title: "Music Streaming Website",
-    description:
-      "This project is built using React.js and Tailwind CSS with static data. It allows users to play songs online with a built-in music player. The app includes custom music controls for playing, pausing, and skipping tracks. It features a responsive and clean UI, designed with Tailwind CSS for a smooth user experience.",
-    tech: ["React.js", "TailwindCSS"],
-    github: "https://github.com/yadavd4631/Spotify-Clone",
-    live: "https://musicspotifyclone.vercel.app/",
+      "Co-founder & frontend lead on a multi-tenant gym management platform, built alongside a C# backend developer and a domain-expert trainer. Owning frontend architecture and product decisions; pilot deployment is live at Iron Forge Fitness.",
+    tech: ["React.js", "TailwindCSS", "Multi-tenant Architecture", "C# Backend"],
+    github: null,
+    live: "https://www.asterisks.app/",
+    badge: "In Progress",
   },
 ];
 
 export default function Projects() {
   return (
     <motion.div
-      className="mx-auto max-w-2xl md:px-4 px-8 mt-8"
+      className="mx-auto max-w-2xl md:px-4 px-8 mt-12"
       initial={{ filter: 'blur(10px)' }}
       animate={{ filter: 'blur(0px)' }}
       transition={{ duration: 0.3 }}
     >
-      <h2 className="text-xl text-slate-100">Projects</h2>
-      <div>
+      <h2 className="text-xl text-slate-100 mb-6 font-semibold tracking-tight">Projects</h2>
+      
+      <div className="flex flex-col gap-6">
         {projects.map((project, index) => (
-          <div key={index} className=" my-4 rounded-lg ">
-            <h2 className="text-base font-semibold text-slate-200">
-              {index + 1}. {project.title}
-            </h2>
-            <p className="text-slate-300 mt-1 text-base tracking-tight">
-              {project.description || 'No description available.'}
-            </p>
-            <div className="mt-2">
-              <div className="flex flex-wrap gap-2 mt-1">
-                {project.tech.map((tech, techIndex) => (
-                  <div
-                    key={techIndex}
-                    className="bg-slate-100 text-slate-800 p-1 border rounded shadow text-xs font-semibold"
-                  >
-                    {tech}
-                  </div>
-                ))}
-              </div>
+          <div 
+            key={index} 
+            className="group relative bg-slate-800/40 border border-slate-700/50 rounded-xl p-6 hover:bg-slate-800/60 transition-all duration-300"
+          >
+            {/* Title & Badge */}
+            <div className="flex flex-wrap items-center gap-3 mb-3">
+              <h3 className="text-lg font-semibold text-slate-200 group-hover:text-blue-400 transition-colors">
+                {project.title}
+              </h3>
+              {project.badge && (
+                <span className="text-[10px] uppercase tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full font-semibold">
+                  {project.badge}
+                </span>
+              )}
             </div>
-            <div className="mt-2 text-sm">
-              <a
-                href={project.github}
-                className="text-slate-100 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                GitHub
-              </a>
-              <span className="mx-2">|</span>
-              <a
-                href={project.live}
-                className="text-slate-100 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Live
-              </a>
             
+            {/* Description */}
+            <p className="text-slate-400 leading-relaxed text-sm mb-5">
+              {project.description}
+            </p>
+            
+            {/* Tech Stack */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              {project.tech.map((tech, techIndex) => (
+                <span
+                  key={techIndex}
+                  className="bg-slate-900/60 text-slate-300 px-2.5 py-1 rounded-md text-xs font-medium border border-slate-700/50"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+            
+            {/* Links */}
+            <div className="flex items-center gap-4 text-sm font-medium mt-1">
+              {project.github && (
+                <a
+                  href={project.github}
+                  className="flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaGithub size={16} />
+                  <span>GitHub</span>
+                </a>
+              )}
+              {project.live && (
+                <a
+                  href={project.live}
+                  className="flex items-center gap-1.5 text-slate-300 hover:text-blue-400 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaExternalLinkAlt size={14} />
+                  <span>Live Demo</span>
+                </a>
+              )}
             </div>
           </div>
         ))}

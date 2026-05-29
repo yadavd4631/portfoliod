@@ -25,7 +25,7 @@ const Socials = [
   },
   {
     name: "Resume",
-    url: "https://drive.google.com/file/d/15AHWogx74abj0ySQ1ym-OAMwqGflsMzu/view?usp=drive_link",
+    url: "https://drive.google.com/file/d/10jxbcwCZwRP8x1yDInqVzLbVi0L9bkv0/view?usp=sharing",
     icon: FaFileAlt,
   },
 ];
@@ -79,33 +79,34 @@ export default function AboutSection() {
       </div>
 
       <div className="mt-8 flex flex-col ">
-        <h2 className="text-xl text-slate-200">About Me.</h2>
-        <ul className="mt-2 flex flex-col gap-2 list-disc list-inside text-base tracking-tight">
+        <h2 className="text-xl text-slate-100 mb-4 font-semibold tracking-tight">About Me.</h2>
+        <ul className="mt-2 flex flex-col gap-3 list-disc list-inside text-base tracking-tight text-slate-300">
           <li>
-            Hi, I'm Deepak Yadav, a passionate Frontend Developer with expertise
-            in HTML, CSS, JavaScript, React.js, Tailwind CSS, and GitHub. I have
-            hands-on experience in building responsive and optimized web
-            applications.
+            Frontend engineer building production AI-integrated SaaS at{" "}
+            <span className="text-slate-100 font-medium">Plootus</span> — an AI
+            voice agent platform for SDR teams. I ship customer-facing surfaces
+            in React, Tailwind, and Framer Motion, with hands-on integration of
+            Claude and Gemini APIs into campaign and agent management flows.
           </li>
           <li>
-            Previously, I worked as an Elite Projects Analyst at Instat IH
-            (04/2024 - 12/2024)
-            <br />
-            Where I handled comprehensive front-end responsibilities.
-            <br />
-            Maintaining and updating the sports website with real-time match
-            schedules and detailed player profiles.
-            <br />
-            Developing responsive user interfaces and integrating data using
-            React.js, JavaScript, HTML, and CSS. <br />
-            Troubleshooting UI issues, optimizing data flow, and collaborating
-            with backend and design teams to refine the website's performance
-            and presentation.
+            Comfortable extending into backend work — REST API design, MongoDB
+            data modeling, and AWS deployment. I also author TRDs to align
+            engineering before implementation. Early team member experienced in
+            fast-moving startup environments with direct founder, PM, and
+            senior-engineer collaboration.
           </li>
           <li>
-            I am actively looking for opportunities as a Frontend Developer
-            where I can contribute my skills, build innovative projects, and
-            grow professionally..{" "}
+            Previously, I worked as a{" "}
+            <span className="text-slate-100 font-medium">
+              Frontend Developer at InStat IH
+            </span>{" "}
+            (04/2024 – 12/2024), owning frontend development across sports-data
+            product surfaces, building and maintaining responsive React
+            interfaces used in day-to-day analyst workflows.
+          </li>
+          <li>
+            I am actively looking for new opportunities where I can contribute
+            my skills, build innovative products, and grow professionally.{" "}
             <a
               href="mailto:yadavd4631@gmail.com"
               className="text-slate-100 hover:text-blue-300 underline"
