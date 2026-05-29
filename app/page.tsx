@@ -1,3 +1,4 @@
+import IntroScreen from '@/components/IntroScreen';
 import AboutSection from '@/components/about-section';
 import Experience from '@/components/Experience';
 import Education from '@/components/Education';
@@ -8,14 +9,17 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <div className="flex flex-col mt-10 w-full text-slate-300 mx-auto overflow-hidden">
-      <AboutSection />
-      <Experience />
-      <Skills />
-      <Projects />
-      <Education />
-      <Contact />
-      <Footer />
-    </div>
+    <>
+      <IntroScreen />
+      <div className="flex flex-col mt-10 w-full text-slate-300 mx-auto overflow-hidden">
+        <AboutSection />
+        <Experience />
+        <Skills />
+        <Projects />
+        <Education />
+        <Contact />
+        <Footer />
+      </div>
+    </>
   );
 }
