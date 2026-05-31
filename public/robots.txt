@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://portfolioreactd.netlify.app/
+
+# Sitemaps
+Sitemap: https://portfolioreactd.netlify.app/sitemap.xml
