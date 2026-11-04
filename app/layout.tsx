@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   title: "Deepak Yadav | DevOps Engineer Portfolio",
   description:
     "Portfolio of Deepak Yadav — DevOps Engineer specializing in AWS infrastructure, Kubernetes/EKS, Terraform, and Datadog Observability.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
