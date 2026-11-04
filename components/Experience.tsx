@@ -3,26 +3,41 @@ import { motion } from 'framer-motion';
 
 const experiences = [
   {
-    role: "Frontend Engineer",
-    company: "Plootus",
-    period: "April 2025 – Present",
-    description: "AI-Powered SDR Platform",
+    role: "DevOps Engineer",
+    company: "Zoos Global",
+    location: "Mumbai, Maharashtra, India",
+    period: "June 2026 – Present",
+    description: "Datadog Implementation Partner · Cloud & Observability",
     bullets: [
-      "Architected and shipped CMAB Phase 2 AI Campaign Management UI with paginated script generation and real-time polling on LLM responses.",
-      "Redesigned Campaign Hub with health indicators and a mode-first creation flow.",
-      "Rebuilt the company suggestion system using an event-driven Jaro–Winkler matcher, reducing lookup latency.",
-      "Executed a zero-downtime production domain migration to AWS Route 53."
+      "Deploy and tune Datadog monitoring (monitors, dashboards, log pipelines) for client environments as a Datadog implementation partner.",
+      "Rolled out Datadog agents across Linux fleets using Ansible, replacing manual per-server setup.",
+      "Wrote reusable Terraform modules for IAM / EKS / networking and applied them across multiple environments.",
+      "Diagnosed EKS failures (ImagePullBackOff, node readiness, IAM and subnet misconfig) and documented fixes for recurring cases.",
+      "Traced production incidents across AWS, Kubernetes and application logs, with fixes applied under change control.",
+      "Supported CI/CD pipelines (GitHub Actions, GitLab, Jenkins) with Docker, Nginx, SSL/TLS and DNS setup.",
     ],
   },
   {
-    role: "Frontend Developer",
+    role: "Frontend Engineer",
+    company: "Plootus",
+    location: "",
+    period: "April 2025 – June 2026",
+    description: "AI-Powered SDR Platform",
+    bullets: [
+      "Executed a zero-downtime production domain migration from v1.plootus.ai to plootus.ai on AWS Route 53, managing DNS, SSL, CORS, OAuth redirect URIs, and deployment cutover.",
+      "Worked on AWS-based deployment workflows alongside Node.js/Express and MongoDB services, supporting production rollouts of customer-facing features. Integrated Claude and Gemini APIs into campaign and agent management flows, including real-time polling on LLM responses.",
+      "Authored TRDs for Prospect Hub v2 (Accounts, Insights, Smart List Builder) to align founders, PM, and engineers on scope and rollout before implementation.",
+      "Shipped React/Tailwind interfaces for the AI voice-agent platform, including the AI Campaign Management UI (CMAB Phase 2) and Campaign Hub redesign.",
+    ],
+  },
+  {
+    role: "Frontend Developer (titled Elite Projects Analyst)",
     company: "InStat IH",
+    location: "",
     period: "April 2024 – December 2024",
     description: "Sports-Data Analytics",
     bullets: [
-      "Owned frontend development across sports-data product surfaces.",
-      "Built and maintained responsive React interfaces used in day-to-day analyst workflows.",
-      "Collaborated cross-functionally to optimize UI performance and data presentation."
+      "Owned frontend development across sports-data product surfaces, building and maintaining responsive React interfaces used in day-to-day analyst workflows.",
     ],
   },
 ];
@@ -50,6 +65,12 @@ export default function Experience() {
               </h3>
               <div className="flex flex-wrap items-center gap-2 mt-1">
                 <span className="text-slate-300 font-medium text-sm">{exp.company}</span>
+                {exp.location && (
+                  <>
+                    <span className="text-slate-600 hidden sm:inline text-xs">•</span>
+                    <span className="text-slate-400 text-xs">{exp.location}</span>
+                  </>
+                )}
                 <span className="text-slate-600 hidden sm:inline text-xs">•</span>
                 <span className="text-slate-400 text-xs font-medium tracking-wide bg-slate-800/60 border border-slate-700/50 px-2 py-0.5 rounded-md">
                   {exp.period}

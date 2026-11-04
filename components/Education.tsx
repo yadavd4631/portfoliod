@@ -5,7 +5,7 @@ import { FaGraduationCap } from 'react-icons/fa';
 const education = [
   {
     institution: "Maharaja Agrasen Himalayan Garhwal University (MAHGU)",
-    degree: "Master of Computer Applications (MCA)",
+    degree: "Master of Computer Applications (MCA) — Computer Applications",
     period: "Graduated January 2023",
     coursework: ["Web Technologies", "Database Management Systems", "Software Engineering"],
   }

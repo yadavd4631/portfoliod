@@ -5,12 +5,21 @@ import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 const projects = [
   {
     title: "Asterisks — Gym Management SaaS",
+    period: "February 2026 – July 2026",
+    role: "Co-founder / Engineering",
     description:
-      "Co-founder & frontend lead on a multi-tenant gym management platform, built alongside a C# backend developer and a domain-expert trainer. Owning frontend architecture and product decisions; pilot deployment is live at Iron Forge Fitness.",
-    tech: ["React.js", "TailwindCSS", "Multi-tenant Architecture", "C# Backend"],
+      "Built and shipped a multi-tenant gym management SaaS (WhatsApp-native, React + C# backend) for small Indian gym owners. Owned end-to-end product architecture, cloud deployment, and hosting decisions on Azure App Service with Azure SQL, integrating the WhatsApp Business Cloud API and reaching paying early customers.",
+    tech: [
+      "React.js",
+      "C# Backend",
+      "Azure App Service",
+      "Azure SQL",
+      "WhatsApp Business Cloud API",
+      "Multi-tenant Architecture",
+    ],
     github: null,
     live: "https://www.asterisks.app/",
-    badge: "In Progress",
+    badge: "Shipped",
   },
 ];
 
@@ -31,16 +40,27 @@ export default function Projects() {
             className="group relative bg-slate-800/40 border border-slate-700/50 rounded-xl p-6 hover:bg-slate-800/60 transition-all duration-300"
           >
             {/* Title & Badge */}
-            <div className="flex flex-wrap items-center gap-3 mb-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
               <h3 className="text-lg font-semibold text-slate-200 group-hover:text-blue-400 transition-colors">
                 {project.title}
               </h3>
               {project.badge && (
-                <span className="text-[10px] uppercase tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full font-semibold">
+                <span className="text-[10px] uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full font-semibold">
                   {project.badge}
                 </span>
               )}
             </div>
+            {(project.role || project.period) && (
+              <div className="flex flex-wrap items-center gap-2 mb-3 text-xs text-slate-400">
+                {project.role && <span className="font-medium text-slate-300">{project.role}</span>}
+                {project.role && project.period && <span className="text-slate-600">•</span>}
+                {project.period && (
+                  <span className="bg-slate-800/60 border border-slate-700/50 px-2 py-0.5 rounded-md">
+                    {project.period}
+                  </span>
+                )}
+              </div>
+            )}
             
             {/* Description */}
             <p className="text-slate-400 leading-relaxed text-sm mb-5">

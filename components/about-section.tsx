@@ -25,7 +25,7 @@ const Socials = [
   },
   {
     name: "Resume",
-    url: "https://drive.google.com/file/d/10jxbcwCZwRP8x1yDInqVzLbVi0L9bkv0/view?usp=sharing",
+    url: "/resume.pdf",
     icon: FaFileAlt,
   },
 ];
@@ -46,7 +46,7 @@ export default function AboutSection() {
           <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent mb-1">
             Hi, I'm Deepak 👋
           </h1>
-          <p className="text-slate-400 font-medium">Frontend Engineer</p>
+          <p className="text-slate-400 font-medium">DevOps Engineer</p>
         </div>
         
         <div className="text-base flex items-center gap-4">
@@ -88,16 +88,14 @@ export default function AboutSection() {
         <h2 className="text-xl text-slate-100 mb-4 font-semibold tracking-tight">About Me.</h2>
         <div className="flex flex-col gap-4 text-[15px] leading-relaxed text-slate-400">
           <p>
-            I'm a Frontend Engineer currently building production AI-integrated SaaS at{" "}
-            <span className="text-slate-200 font-medium">Plootus</span> — an AI
-            voice agent platform for SDR teams.
+            I'm a <span className="text-slate-200 font-medium">DevOps Engineer</span> at{" "}
+            <span className="text-slate-200 font-medium">Zoos Global</span> (a Datadog implementation partner) specializing in AWS infrastructure, Kubernetes/EKS, Terraform, and end-to-end cloud observability.
           </p>
           <p>
-            I specialize in crafting beautiful, high-performance interfaces using React, Tailwind CSS, and Framer Motion. I'm also highly comfortable extending into the backend — designing REST APIs, modeling data in MongoDB, and deploying infrastructure on AWS. I enjoy taking ownership of features from Technical Requirement Documents (TRDs) all the way to production.
+            I hold three Datadog certifications: <span className="text-slate-200 font-medium">Fundamentals</span>, <span className="text-slate-200 font-medium">Log Management</span>, and <span className="text-slate-200 font-medium">APM &amp; Distributed Tracing</span>. Prior production software engineering experience (React, Node.js, MongoDB) empowers me to bridge the gap between software development and infrastructure, rapidly isolating and debugging issues across application logic, microservices, and cloud systems.
           </p>
           <p>
-            I am actively looking for new opportunities where I can contribute
-            my skills, build innovative products, and grow professionally.{" "}
+            I am actively looking for opportunities where I can drive cloud reliability, scale CI/CD pipelines, and design resilient infrastructure.{" "}
             <a
               href="mailto:yadavd4631@gmail.com"
               className="text-blue-400 hover:text-blue-300 underline underline-offset-4 transition-colors"

@@ -3,28 +3,32 @@ import { motion } from 'framer-motion';
 
 const skillGroups = [
   {
-    category: "Languages",
-    skills: ["JavaScript", "HTML", "CSS"],
+    category: "Cloud Platforms",
+    skills: ["AWS", "GCP", "Azure", "Amazon EKS", "VPC", "IAM", "EC2", "S3", "Route 53", "RDS", "Lambda", "CloudWatch"],
   },
   {
-    category: "Frameworks & Libraries",
-    skills: ["React.js", "Tailwind CSS", "shadcn/ui", "Framer Motion", "Express.js"],
+    category: "Containers & Orchestration",
+    skills: ["Kubernetes", "Docker", "Helm", "EKS Cluster Management"],
   },
   {
-    category: "Backend & Data",
-    skills: ["Node.js", "MongoDB", "REST API Design", "Data Modeling"],
+    category: "IaC & Automation",
+    skills: ["Terraform", "Ansible", "Bash Scripting"],
   },
   {
-    category: "AI Integration",
-    skills: ["Claude API", "Gemini API"],
+    category: "CI/CD & Pipelines",
+    skills: ["GitHub Actions", "GitLab CI/CD", "Jenkins", "Git"],
   },
   {
-    category: "DevOps & Tools",
-    skills: ["Git", "GitHub", "GitLab CI/CD", "Vercel", "Netlify", "AWS Route 53", "Firebase"],
+    category: "Observability & Monitoring",
+    skills: ["Datadog APM", "Datadog Logs & Metrics", "Datadog Monitors & Dashboards", "Distributed Tracing", "Kibana", "CloudWatch"],
   },
   {
-    category: "Engineering Practices",
-    skills: ["TRD Authoring", "Cross-Functional Collaboration", "Code Review"],
+    category: "Linux & Networking",
+    skills: ["Ubuntu / Linux", "Nginx", "DNS", "SSL/TLS", "CORS"],
+  },
+  {
+    category: "Software Development",
+    skills: ["JavaScript", "React.js", "Node.js", "Express.js", "MongoDB", "REST APIs"],
   },
 ];
 
