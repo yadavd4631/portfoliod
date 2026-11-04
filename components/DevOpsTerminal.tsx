@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   FaUser,
   FaBriefcase,
@@ -10,9 +10,6 @@ import {
   FaEnvelope,
   FaTrash,
   FaExternalLinkAlt,
-  FaExpand,
-  FaCompress,
-  FaCheckCircle,
   FaCloud,
   FaServer,
   FaShieldAlt,
@@ -20,16 +17,14 @@ import {
   FaGithub,
   FaLinkedin,
   FaPhoneAlt,
-  FaArrowRight,
-  FaAws,
+  FaGraduationCap,
+  FaTerminal,
 } from 'react-icons/fa';
 import {
   SiKubernetes,
   SiDatadog,
   SiTerraform,
-  SiDocker,
 } from 'react-icons/si';
-import { VscTerminal } from 'react-icons/vsc';
 
 interface TerminalEntry {
   id: string;
@@ -42,7 +37,6 @@ export default function DevOpsTerminal() {
   const [input, setInput] = useState('');
   const [cmdHistory, setCmdHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const terminalEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -84,10 +78,17 @@ export default function DevOpsTerminal() {
 `}
         </pre>
         <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-400 border-b border-slate-800 pb-2">
-          <span className="text-emerald-400 font-semibold">● Session Connected:</span>
-          <span>AWS us-east-1 (EKS Prod)</span>
+          <span className="text-emerald-400 font-semibold flex items-center gap-1.5">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            Connected: AWS us-east-1
+          </span>
           <span className="text-slate-600">•</span>
-          <span>Datadog Agent v7.54 Active</span>
+          <span>EKS v1.29 Cluster</span>
+          <span className="text-slate-600">•</span>
+          <span>Datadog Agent Active</span>
           <span className="text-slate-600">•</span>
           <span className="text-blue-300">Click any tab above or type commands below</span>
         </div>
@@ -139,23 +140,27 @@ export default function DevOpsTerminal() {
           </p>
         </div>
 
-        {/* Quick Highlights */}
+        {/* Quick KPI Highlights */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-[11px]">
-          <div className="bg-slate-800/40 border border-slate-700/50 p-2 rounded-lg">
+          <div className="bg-slate-800/40 border border-slate-700/50 p-2.5 rounded-lg">
             <span className="text-slate-400 block text-[10px]">Uptime SLA</span>
             <span className="text-emerald-400 font-bold text-sm">99.99%</span>
+            <span className="text-[10px] text-slate-500 block mt-0.5">Zero-downtime cutovers</span>
           </div>
-          <div className="bg-slate-800/40 border border-slate-700/50 p-2 rounded-lg">
+          <div className="bg-slate-800/40 border border-slate-700/50 p-2.5 rounded-lg">
             <span className="text-slate-400 block text-[10px]">IaC Coverage</span>
             <span className="text-blue-400 font-bold text-sm">100% Terraform</span>
+            <span className="text-[10px] text-slate-500 block mt-0.5">EKS, IAM &amp; VPC</span>
           </div>
-          <div className="bg-slate-800/40 border border-slate-700/50 p-2 rounded-lg">
+          <div className="bg-slate-800/40 border border-slate-700/50 p-2.5 rounded-lg">
             <span className="text-slate-400 block text-[10px]">Certifications</span>
             <span className="text-purple-400 font-bold text-sm">3x Datadog</span>
+            <span className="text-[10px] text-slate-500 block mt-0.5">APM, Logs &amp; Fund.</span>
           </div>
-          <div className="bg-slate-800/40 border border-slate-700/50 p-2 rounded-lg">
+          <div className="bg-slate-800/40 border border-slate-700/50 p-2.5 rounded-lg">
             <span className="text-slate-400 block text-[10px]">Ansible Fleet</span>
             <span className="text-amber-400 font-bold text-sm">100+ Nodes</span>
+            <span className="text-[10px] text-slate-500 block mt-0.5">Fleet-wide automated</span>
           </div>
         </div>
       </div>
@@ -479,6 +484,40 @@ export default function DevOpsTerminal() {
     );
   }
 
+  function renderEducation() {
+    return (
+      <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 my-1 space-y-2.5">
+        <div className="flex items-center gap-2 text-xs font-bold text-indigo-400">
+          <FaGraduationCap size={16} />
+          <span>ACADEMIC BACKGROUND</span>
+        </div>
+        <div className="flex flex-wrap items-center justify-between gap-1">
+          <h4 className="text-sm font-bold text-slate-100">
+            Master of Computer Applications (MCA) — Computer Applications
+          </h4>
+          <span className="text-xs bg-slate-800 border border-slate-700/60 text-slate-400 px-2 py-0.5 rounded">
+            Graduated January 2023
+          </span>
+        </div>
+        <p className="text-xs text-slate-300">
+          Maharaja Agrasen Himalayan Garhwal University (MAHGU)
+        </p>
+        <div className="pt-1">
+          <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold block mb-1">
+            Relevant Coursework:
+          </span>
+          <div className="flex flex-wrap gap-1.5">
+            {['Web Technologies', 'Database Management Systems', 'Software Engineering'].map((c, i) => (
+              <span key={i} className="text-[10px] bg-slate-800/80 text-slate-300 border border-slate-700/50 px-2 py-0.5 rounded">
+                {c}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   function renderArchitecture() {
     return (
       <div className="space-y-3 bg-slate-900/70 border border-slate-800 rounded-xl p-4 my-1 font-mono text-xs">
@@ -719,6 +758,38 @@ export default function DevOpsTerminal() {
     );
   }
 
+  function renderLs() {
+    const files = [
+      { name: 'about.txt', cmd: 'whoami', color: 'text-emerald-400' },
+      { name: 'experience.log', cmd: 'experience', color: 'text-amber-400' },
+      { name: 'projects.json', cmd: 'projects', color: 'text-blue-400' },
+      { name: 'skills.sh', cmd: 'skills', color: 'text-cyan-400' },
+      { name: 'certifications.md', cmd: 'certifications', color: 'text-purple-400' },
+      { name: 'education.txt', cmd: 'education', color: 'text-indigo-400' },
+      { name: 'architecture.diag', cmd: 'architecture', color: 'text-teal-400' },
+      { name: 'resume.pdf', cmd: 'resume', color: 'text-yellow-400' },
+      { name: 'contact.sh', cmd: 'contact', color: 'text-rose-400' },
+    ];
+
+    return (
+      <div className="space-y-1.5 py-1 text-xs">
+        <p className="text-slate-400 text-[11px]">Total 9 files. Click any file to view contents:</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 font-mono">
+          {files.map((f, i) => (
+            <button
+              key={i}
+              onClick={() => executeCommand(f.cmd)}
+              className="flex items-center gap-2 p-1.5 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded text-left transition-colors cursor-pointer group"
+            >
+              <FaFileAlt className={`${f.color} group-hover:scale-110 transition-transform`} size={11} />
+              <span className="text-slate-200 group-hover:text-white">{f.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   function renderHelp() {
     return (
       <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-3.5 my-1 text-xs space-y-2">
@@ -757,7 +828,13 @@ export default function DevOpsTerminal() {
             <p className="text-slate-400">Verified 3x Datadog certifications</p>
           </div>
           <div>
-            <button onClick={() => executeCommand('architecture')} className="text-indigo-400 font-semibold hover:underline cursor-pointer">
+            <button onClick={() => executeCommand('education')} className="text-indigo-400 font-semibold hover:underline cursor-pointer">
+              • education / edu
+            </button>
+            <p className="text-slate-400">MCA degree &amp; coursework from MAHGU</p>
+          </div>
+          <div>
+            <button onClick={() => executeCommand('architecture')} className="text-teal-400 font-semibold hover:underline cursor-pointer">
               • architecture / arch
             </button>
             <p className="text-slate-400">Full visual cloud infrastructure diagram</p>
@@ -787,6 +864,12 @@ export default function DevOpsTerminal() {
             <p className="text-slate-400">Datadog APM &amp; log pipeline telemetry</p>
           </div>
           <div>
+            <button onClick={() => executeCommand('ls')} className="text-slate-300 font-semibold hover:underline cursor-pointer">
+              • ls / dir
+            </button>
+            <p className="text-slate-400">List all portfolio virtual files</p>
+          </div>
+          <div>
             <button onClick={() => executeCommand('clear')} className="text-slate-400 font-semibold hover:underline cursor-pointer">
               • clear
             </button>
@@ -810,26 +893,30 @@ export default function DevOpsTerminal() {
 
     let content: React.ReactNode = null;
 
-    if (cmd === 'whoami' || cmd === 'about' || cmd === 'bio') {
+    if (cmd === 'whoami' || cmd === 'about' || cmd === 'bio' || cmd === 'cat about.txt') {
       content = renderAbout();
-    } else if (cmd === 'experience' || cmd === 'exp' || cmd === 'work') {
+    } else if (cmd === 'experience' || cmd === 'exp' || cmd === 'work' || cmd === 'cat experience.log') {
       content = renderExperience();
-    } else if (cmd === 'projects' || cmd === 'proj') {
+    } else if (cmd === 'projects' || cmd === 'proj' || cmd === 'cat projects.json') {
       content = renderProjects();
-    } else if (cmd === 'skills' || cmd === 'tech' || cmd === 'stack') {
+    } else if (cmd === 'skills' || cmd === 'tech' || cmd === 'stack' || cmd === 'cat skills.sh') {
       content = renderSkills();
-    } else if (cmd === 'certifications' || cmd === 'certs' || cmd === 'cert') {
+    } else if (cmd === 'certifications' || cmd === 'certs' || cmd === 'cert' || cmd === 'cat certifications.md') {
       content = renderCertifications();
-    } else if (cmd === 'architecture' || cmd === 'arch' || cmd === 'cloud') {
+    } else if (cmd === 'education' || cmd === 'edu' || cmd === 'degree' || cmd === 'cat education.txt') {
+      content = renderEducation();
+    } else if (cmd === 'architecture' || cmd === 'arch' || cmd === 'cloud' || cmd === 'cat architecture.diag') {
       content = renderArchitecture();
-    } else if (cmd === 'resume' || cmd === 'cv') {
+    } else if (cmd === 'resume' || cmd === 'cv' || cmd === 'cat resume.pdf') {
       content = renderResume();
-    } else if (cmd === 'contact' || cmd === 'email' || cmd === 'phone') {
+    } else if (cmd === 'contact' || cmd === 'email' || cmd === 'phone' || cmd === 'cat contact.sh') {
       content = renderContact();
     } else if (cmd === 'kubectl' || cmd === 'kubectl get pods' || cmd === 'pods' || cmd === 'k8s') {
       content = renderKubectl();
-    } else if (cmd === 'datadog' || cmd === 'datadog status' || cmd === 'dd') {
+    } else if (cmd === 'datadog' || cmd === 'datadog status' || cmd === 'dd' || cmd === 'agent') {
       content = renderDatadog();
+    } else if (cmd === 'ls' || cmd === 'dir') {
+      content = renderLs();
     } else if (cmd === 'help') {
       content = renderHelp();
     } else {
@@ -892,11 +979,13 @@ export default function DevOpsTerminal() {
         'projects',
         'skills',
         'certifications',
+        'education',
         'architecture',
         'resume',
         'contact',
         'kubectl',
         'datadog',
+        'ls',
         'help',
         'clear',
       ];
@@ -911,7 +1000,8 @@ export default function DevOpsTerminal() {
     { label: 'projects', cmd: 'projects', icon: FaProjectDiagram, color: 'text-blue-400' },
     { label: 'skills', cmd: 'skills', icon: FaTools, color: 'text-cyan-400' },
     { label: 'certs', cmd: 'certifications', icon: FaCertificate, color: 'text-purple-400' },
-    { label: 'architecture', cmd: 'architecture', icon: FaShieldAlt, color: 'text-indigo-400' },
+    { label: 'education', cmd: 'education', icon: FaGraduationCap, color: 'text-indigo-400' },
+    { label: 'architecture', cmd: 'architecture', icon: FaShieldAlt, color: 'text-teal-400' },
     { label: 'resume', cmd: 'resume', icon: FaFileAlt, color: 'text-yellow-400' },
     { label: 'contact', cmd: 'contact', icon: FaEnvelope, color: 'text-rose-400' },
     { label: 'kubectl', cmd: 'kubectl', icon: SiKubernetes, color: 'text-teal-400' },
@@ -919,118 +1009,101 @@ export default function DevOpsTerminal() {
   ];
 
   return (
-    <motion.div
-      className={`mx-auto w-full transition-all duration-300 ${
-        isFullscreen
-          ? 'fixed inset-0 z-50 p-2 sm:p-4 bg-black/90 backdrop-blur-xl flex flex-col'
-          : 'max-w-3xl md:px-4 px-4 mt-8'
-      }`}
-      initial={{ filter: 'blur(10px)', y: 20 }}
-      animate={{ filter: 'blur(0px)', y: 0 }}
-      transition={{ duration: 0.4 }}
-    >
-      {/* Terminal Container */}
-      <div
-        className={`bg-[#060a12] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col font-mono text-xs ${
-          isFullscreen ? 'flex-1 h-full' : 'h-[640px]'
-        }`}
-      >
-        {/* Title bar */}
-        <div className="bg-slate-900/90 px-4 py-3 flex items-center justify-between border-b border-slate-800 select-none">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => executeCommand('clear')}
-              title="Clear terminal"
-              className="w-3 h-3 rounded-full bg-red-500 hover:opacity-80 transition-opacity cursor-pointer"
-            />
-            <button
-              onClick={() => setIsFullscreen(!isFullscreen)}
-              title="Toggle size"
-              className="w-3 h-3 rounded-full bg-amber-500 hover:opacity-80 transition-opacity cursor-pointer"
-            />
-            <button
-              onClick={() => executeCommand('help')}
-              title="Help"
-              className="w-3 h-3 rounded-full bg-emerald-500 hover:opacity-80 transition-opacity cursor-pointer"
-            />
-            <span className="text-slate-400 text-xs font-semibold ml-2 hidden sm:inline">
-              deepak@aws-eks-cluster: ~ (bash)
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1.5 text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span>LIVE</span>
-            </span>
-            <button
-              onClick={() => setIsFullscreen(!isFullscreen)}
-              className="text-slate-400 hover:text-white transition-colors cursor-pointer p-1"
-              title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
-            >
-              {isFullscreen ? <FaCompress size={13} /> : <FaExpand size={13} />}
-            </button>
-          </div>
-        </div>
-
-        {/* Command Navigation Tabs */}
-        <div className="bg-slate-900/50 px-3 py-2 border-b border-slate-800/80 flex items-center gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden select-none">
-          <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold whitespace-nowrap mr-1">
-            Browse:
-          </span>
-          {TABS.map((tab) => (
-            <button
-              key={tab.label}
-              onClick={() => executeCommand(tab.cmd)}
-              className="group flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-md bg-slate-800/70 hover:bg-slate-700/80 text-slate-300 hover:text-white border border-slate-700/50 hover:border-blue-400/50 transition-all whitespace-nowrap cursor-pointer active:scale-95"
-            >
-              <tab.icon className={`${tab.color} text-[11px] group-hover:scale-110 transition-transform`} />
-              <span>{tab.label}</span>
-            </button>
-          ))}
+    <div className="w-full h-full flex-1 flex flex-col min-h-0 bg-[#060a12] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl font-mono text-xs">
+      {/* Title bar with live health pill */}
+      <div className="bg-slate-900/90 px-4 py-3 flex items-center justify-between border-b border-slate-800 select-none">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => executeCommand('clear')}
-            className="flex items-center gap-1 text-[11px] px-2 py-1 rounded-md bg-slate-850 hover:bg-red-500/20 text-slate-400 hover:text-red-300 border border-slate-800 hover:border-red-500/30 transition-all whitespace-nowrap cursor-pointer ml-auto"
-            title="Clear Screen"
-          >
-            <FaTrash size={10} />
-            <span className="hidden sm:inline">clear</span>
-          </button>
+            title="Clear terminal"
+            className="w-3 h-3 rounded-full bg-red-500 hover:opacity-80 transition-opacity cursor-pointer"
+          />
+          <button
+            onClick={() => executeCommand('whoami')}
+            title="Home / About"
+            className="w-3 h-3 rounded-full bg-amber-500 hover:opacity-80 transition-opacity cursor-pointer"
+          />
+          <button
+            onClick={() => executeCommand('help')}
+            title="Help"
+            className="w-3 h-3 rounded-full bg-emerald-500 hover:opacity-80 transition-opacity cursor-pointer"
+          />
+          <span className="text-slate-400 text-xs font-semibold ml-2 hidden sm:inline">
+            deepak@aws-eks-cluster: ~ (bash)
+          </span>
         </div>
 
-        {/* Scrollable Terminal Screen */}
-        <div
-          onClick={() => inputRef.current?.focus()}
-          className="flex-1 p-4 overflow-y-auto space-y-3 leading-relaxed text-slate-300 cursor-text select-text"
-        >
-          {entries.map((entry) => (
-            <div key={entry.id} className="space-y-1">
-              {entry.command !== 'system-init' && (
-                <div className="flex items-center gap-2 text-slate-200 font-semibold pt-1">
-                  <span className="text-emerald-400">deepak@aws-eks:~$</span>
-                  <span className="text-cyan-300 font-bold">{entry.command}</span>
-                </div>
-              )}
-              <div className="pl-1 sm:pl-2">{entry.content}</div>
-            </div>
-          ))}
-
-          {/* Prompt line */}
-          <div className="flex items-center gap-2 pt-2 text-slate-200">
-            <span className="text-emerald-400 font-semibold">deepak@aws-eks:~$</span>
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="type 'about', 'skills', 'experience', 'projects', 'certs', 'resume', 'help'..."
-              className="flex-1 bg-transparent border-none outline-none text-slate-100 placeholder:text-slate-600 font-mono text-xs focus:ring-0"
-            />
-          </div>
-          <div ref={terminalEndRef} />
+        <div className="flex items-center gap-2">
+          <span className="flex items-center gap-1.5 text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="font-semibold">All Systems Operational</span>
+          </span>
+          <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold hidden md:inline bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/50">
+            AWS us-east-1
+          </span>
         </div>
       </div>
-    </motion.div>
+
+      {/* Command Navigation Tabs */}
+      <div className="bg-slate-900/60 px-3 py-2 border-b border-slate-800/80 flex items-center gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden select-none">
+        <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold whitespace-nowrap mr-1">
+          Explore:
+        </span>
+        {TABS.map((tab) => (
+          <button
+            key={tab.label}
+            onClick={() => executeCommand(tab.cmd)}
+            className="group flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-md bg-slate-800/70 hover:bg-slate-700/80 text-slate-300 hover:text-white border border-slate-700/50 hover:border-blue-400/50 transition-all whitespace-nowrap cursor-pointer active:scale-95"
+          >
+            <tab.icon className={`${tab.color} text-[11px] group-hover:scale-110 transition-transform`} />
+            <span>{tab.label}</span>
+          </button>
+        ))}
+        <button
+          onClick={() => executeCommand('clear')}
+          className="flex items-center gap-1 text-[11px] px-2 py-1 rounded-md bg-slate-850 hover:bg-red-500/20 text-slate-400 hover:text-red-300 border border-slate-800 hover:border-red-500/30 transition-all whitespace-nowrap cursor-pointer ml-auto"
+          title="Clear Screen"
+        >
+          <FaTrash size={10} />
+          <span className="hidden sm:inline">clear</span>
+        </button>
+      </div>
+
+      {/* Scrollable Terminal Screen */}
+      <div
+        onClick={() => inputRef.current?.focus()}
+        className="flex-1 min-h-0 p-4 overflow-y-auto space-y-3 leading-relaxed text-slate-300 cursor-text select-text"
+      >
+        {entries.map((entry) => (
+          <div key={entry.id} className="space-y-1">
+            {entry.command !== 'system-init' && (
+              <div className="flex items-center gap-2 text-slate-200 font-semibold pt-1">
+                <span className="text-emerald-400">deepak@aws-eks:~$</span>
+                <span className="text-cyan-300 font-bold">{entry.command}</span>
+              </div>
+            )}
+            <div className="pl-1 sm:pl-2">{entry.content}</div>
+          </div>
+        ))}
+
+        {/* Prompt line */}
+        <div className="flex items-center gap-2 pt-2 text-slate-200">
+          <span className="text-emerald-400 font-semibold">deepak@aws-eks:~$</span>
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="type 'about', 'experience', 'projects', 'skills', 'certs', 'resume', 'help'..."
+            className="flex-1 bg-transparent border-none outline-none text-slate-100 placeholder:text-slate-600 font-mono text-xs focus:ring-0"
+          />
+        </div>
+        <div ref={terminalEndRef} />
+      </div>
+    </div>
   );
 }
