@@ -50,7 +50,7 @@ export default function DevOpsMetrics() {
         {metrics.map((metric, i) => (
           <div
             key={i}
-            className={`group bg-slate-850/50 bg-slate-900/60 border border-slate-800/80 rounded-xl p-3.5 flex flex-col justify-between transition-all duration-300 hover:bg-slate-800/60 ${metric.border}`}
+            className={`group bg-slate-900/60 border border-slate-800/80 rounded-xl p-3.5 flex flex-col justify-between transition-all duration-300 hover:bg-slate-800/60 ${metric.border}`}
           >
             <div className="flex items-center justify-between mb-2">
               <span className={`text-2xl font-black bg-gradient-to-r ${metric.color} bg-clip-text text-transparent`}>
@@ -68,3 +68,4 @@ export default function DevOpsMetrics() {
     </motion.div>
   );
 }
+

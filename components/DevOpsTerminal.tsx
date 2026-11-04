@@ -147,7 +147,7 @@ export default function DevOpsTerminal() {
         </div>
 
         {/* Quick action chips */}
-        <div className="bg-slate-900/40 px-4 py-2 border-b border-slate-800/60 flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+        <div className="bg-slate-900/40 px-4 py-2 border-b border-slate-800/60 flex items-center gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <span className="text-[11px] text-slate-500 whitespace-nowrap mr-1">Quick Run:</span>
           {SUGGESTIONS.map((cmd) => (
             <button
@@ -216,3 +216,4 @@ export default function DevOpsTerminal() {
     </motion.div>
   );
 }
+

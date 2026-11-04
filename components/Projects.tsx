@@ -145,30 +145,32 @@ export default function Projects() {
             </div>
             
             {/* Links */}
-            <div className="flex items-center gap-4 text-sm font-medium mt-1">
-              {project.github && (
-                <a
-                  href={project.github}
-                  className="flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <FaGithub size={16} />
-                  <span>GitHub</span>
-                </a>
-              )}
-              {project.live && (
-                <a
-                  href={project.live}
-                  className="flex items-center gap-1.5 text-slate-300 hover:text-blue-400 transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <FaExternalLinkAlt size={14} />
-                  <span>Live Demo</span>
-                </a>
-              )}
-            </div>
+            {(project.github || project.live) && (
+              <div className="flex items-center gap-4 text-sm font-medium mt-1">
+                {project.github && (
+                  <a
+                    href={project.github}
+                    className="flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaGithub size={16} />
+                    <span>GitHub</span>
+                  </a>
+                )}
+                {project.live && (
+                  <a
+                    href={project.live}
+                    className="flex items-center gap-1.5 text-slate-300 hover:text-blue-400 transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaExternalLinkAlt size={14} />
+                    <span>Live Demo</span>
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

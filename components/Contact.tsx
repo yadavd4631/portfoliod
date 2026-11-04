@@ -37,17 +37,17 @@ export default function Contact() {
       
       <div className="mt-6 flex flex-wrap gap-4">
         {contactMethods.map((method, index) => (
-          <Link legacyBehavior key={index} href={method.href} passHref>
-            <a
-              className="group flex items-center gap-2.5 bg-slate-800/40 border border-slate-700/50 text-slate-300 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-700/50 hover:text-white transition-all duration-300"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="text-slate-400 group-hover:text-blue-400 transition-colors">
-                {method.icon}
-              </span>
-              <span>{method.label}</span>
-            </a>
+          <Link
+            key={index}
+            href={method.href}
+            className="group flex items-center gap-2.5 bg-slate-800/40 border border-slate-700/50 text-slate-300 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-700/50 hover:text-white transition-all duration-300"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="text-slate-400 group-hover:text-blue-400 transition-colors">
+              {method.icon}
+            </span>
+            <span>{method.label}</span>
           </Link>
         ))}
       </div>
