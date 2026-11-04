@@ -27,16 +27,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head></head>
-      <body className={`${spaceGrotesk.variable} antialiased`}>
+      <body className={`${spaceGrotesk.variable} antialiased`} suppressHydrationWarning>
         <CanonicalLink />
         <Analytics />
-        <Script
-          defer
-          data-domain="" // Replace with your domain
-          src=""
-        />
         {children}
       </body>
     </html>

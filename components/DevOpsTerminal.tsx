@@ -1223,7 +1223,10 @@ export default function DevOpsTerminal() {
   ];
 
   return (
-    <div className="w-full h-full flex-1 flex flex-col min-h-0 bg-[#060a12] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl font-mono text-xs">
+    <div
+      suppressHydrationWarning
+      className="w-full h-full flex-1 flex flex-col min-h-0 bg-[#060a12] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl font-mono text-xs"
+    >
       {/* Title bar with live health pill */}
       <div className="bg-slate-900/90 px-4 py-3 flex items-center justify-between border-b border-slate-800 select-none">
         <div className="flex items-center gap-2">

@@ -10,10 +10,12 @@ function getOrdinalNum(n: number) {
 }
 
 export default function IntroScreen() {
+  const [mounted, setMounted] = useState(false);
   const [count, setCount] = useState<number | null>(null);
   const [show, setShow] = useState(true);
 
   useEffect(() => {
+    setMounted(true);
     let isMounted = true;
 
     async function fetchVisitorCount() {
@@ -57,12 +59,14 @@ export default function IntroScreen() {
 
   // Prevent scrolling while intro is active
   useEffect(() => {
-    if (show) {
+    if (mounted && show) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
     }
-  }, [show]);
+  }, [mounted, show]);
+
+  if (!mounted) return null;
 
   return (
     <AnimatePresence>
