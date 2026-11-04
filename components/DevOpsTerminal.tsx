@@ -1,6 +1,5 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import {
   FaUser,
   FaBriefcase,
@@ -18,7 +17,7 @@ import {
   FaLinkedin,
   FaPhoneAlt,
   FaGraduationCap,
-  FaTerminal,
+  FaFolder,
 } from 'react-icons/fa';
 import {
   SiKubernetes,
@@ -32,11 +31,58 @@ interface TerminalEntry {
   content: React.ReactNode;
 }
 
+interface VFSItem {
+  name: string;
+  type: 'file' | 'dir';
+  content?: string | React.ReactNode;
+}
+
 export default function DevOpsTerminal() {
   const [entries, setEntries] = useState<TerminalEntry[]>([]);
   const [input, setInput] = useState('');
   const [cmdHistory, setCmdHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
+  const [currentPath, setCurrentPath] = useState<string>('~');
+  const [vfs, setVfs] = useState<Record<string, Record<string, VFSItem>>>({
+    '~': {
+      'about.txt': { name: 'about.txt', type: 'file', content: 'RENDER_ABOUT' },
+      'experience.log': { name: 'experience.log', type: 'file', content: 'RENDER_EXPERIENCE' },
+      'projects.json': { name: 'projects.json', type: 'file', content: 'RENDER_PROJECTS' },
+      'skills.sh': { name: 'skills.sh', type: 'file', content: 'RENDER_SKILLS' },
+      'certifications.md': { name: 'certifications.md', type: 'file', content: 'RENDER_CERTS' },
+      'education.txt': { name: 'education.txt', type: 'file', content: 'RENDER_EDUCATION' },
+      'architecture.diag': { name: 'architecture.diag', type: 'file', content: 'RENDER_ARCHITECTURE' },
+      'resume.pdf': { name: 'resume.pdf', type: 'file', content: 'RENDER_RESUME' },
+      'contact.sh': { name: 'contact.sh', type: 'file', content: 'RENDER_CONTACT' },
+      'k8s-manifests': { name: 'k8s-manifests', type: 'dir' },
+      'terraform': { name: 'terraform', type: 'dir' },
+    },
+    '~/k8s-manifests': {
+      'deployment.yaml': {
+        name: 'deployment.yaml',
+        type: 'file',
+        content: 'apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: portfolio-backend\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: portfolio\n  template:\n    metadata:\n      labels:\n        app: portfolio\n    spec:\n      containers:\n      - name: backend\n        image: deepak/portfolio-api:latest\n        ports:\n        - containerPort: 3000',
+      },
+      'service.yaml': {
+        name: 'service.yaml',
+        type: 'file',
+        content: 'apiVersion: v1\nkind: Service\nmetadata:\n  name: portfolio-service\nspec:\n  type: ClusterIP\n  ports:\n  - port: 80\n    targetPort: 3000\n  selector:\n    app: portfolio',
+      },
+    },
+    '~/terraform': {
+      'main.tf': {
+        name: 'main.tf',
+        type: 'file',
+        content: 'module "vpc" {\n  source = "./modules/vpc"\n  cidr_block = "10.0.0.0/16"\n}\n\nmodule "eks" {\n  source = "./modules/eks"\n  cluster_name = "prod-eks"\n  vpc_id = module.vpc.vpc_id\n}',
+      },
+      'variables.tf': {
+        name: 'variables.tf',
+        type: 'file',
+        content: 'variable "region" {\n  default = "us-east-1"\n}',
+      },
+    },
+  });
+
   const terminalEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -48,7 +94,7 @@ export default function DevOpsTerminal() {
     scrollToBottom();
   }, [entries]);
 
-  // Initial load entry: Welcome banner + About
+  // Initial banner & about
   useEffect(() => {
     setEntries([
       {
@@ -90,7 +136,7 @@ export default function DevOpsTerminal() {
           <span className="text-slate-600">•</span>
           <span>Datadog Agent Active</span>
           <span className="text-slate-600">•</span>
-          <span className="text-blue-300">Click any tab above or type commands below</span>
+          <span className="text-blue-300">Bash shell active (supports mkdir, cd, touch, ls, cat, etc.)</span>
         </div>
       </div>
     );
@@ -759,32 +805,43 @@ export default function DevOpsTerminal() {
   }
 
   function renderLs() {
-    const files = [
-      { name: 'about.txt', cmd: 'whoami', color: 'text-emerald-400' },
-      { name: 'experience.log', cmd: 'experience', color: 'text-amber-400' },
-      { name: 'projects.json', cmd: 'projects', color: 'text-blue-400' },
-      { name: 'skills.sh', cmd: 'skills', color: 'text-cyan-400' },
-      { name: 'certifications.md', cmd: 'certifications', color: 'text-purple-400' },
-      { name: 'education.txt', cmd: 'education', color: 'text-indigo-400' },
-      { name: 'architecture.diag', cmd: 'architecture', color: 'text-teal-400' },
-      { name: 'resume.pdf', cmd: 'resume', color: 'text-yellow-400' },
-      { name: 'contact.sh', cmd: 'contact', color: 'text-rose-400' },
-    ];
+    const currentItems = vfs[currentPath] || {};
+    const itemsList = Object.values(currentItems);
+
+    if (itemsList.length === 0) {
+      return <div className="text-slate-500 text-xs py-1">(empty directory)</div>;
+    }
 
     return (
       <div className="space-y-1.5 py-1 text-xs">
-        <p className="text-slate-400 text-[11px]">Total 9 files. Click any file to view contents:</p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 font-mono">
-          {files.map((f, i) => (
-            <button
-              key={i}
-              onClick={() => executeCommand(f.cmd)}
-              className="flex items-center gap-2 p-1.5 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded text-left transition-colors cursor-pointer group"
-            >
-              <FaFileAlt className={`${f.color} group-hover:scale-110 transition-transform`} size={11} />
-              <span className="text-slate-200 group-hover:text-white">{f.name}</span>
-            </button>
-          ))}
+        <p className="text-slate-400 text-[11px]">
+          Location: <span className="text-cyan-300 font-bold">{currentPath}</span> ({itemsList.length} items):
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 pt-1 font-mono">
+          {itemsList.map((item, i) => {
+            if (item.type === 'dir') {
+              return (
+                <button
+                  key={i}
+                  onClick={() => executeCommand(`cd ${item.name}`)}
+                  className="flex items-center gap-2 p-2 bg-slate-850 hover:bg-slate-800 border border-blue-500/30 rounded text-left transition-colors cursor-pointer group"
+                >
+                  <FaFolder className="text-blue-400 group-hover:scale-110 transition-transform" size={13} />
+                  <span className="text-blue-300 group-hover:text-white font-bold">{item.name}/</span>
+                </button>
+              );
+            }
+            return (
+              <button
+                key={i}
+                onClick={() => executeCommand(`cat ${item.name}`)}
+                className="flex items-center gap-2 p-2 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded text-left transition-colors cursor-pointer group"
+              >
+                <FaFileAlt className="text-slate-400 group-hover:scale-110 transition-transform" size={12} />
+                <span className="text-slate-200 group-hover:text-white">{item.name}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
     );
@@ -792,88 +849,39 @@ export default function DevOpsTerminal() {
 
   function renderHelp() {
     return (
-      <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-3.5 my-1 text-xs space-y-2">
+      <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-3.5 my-1 text-xs space-y-2.5">
         <div className="text-slate-200 font-bold border-b border-slate-800 pb-1">
-          AVAILABLE TERMINAL COMMANDS:
+          BASH SHELL &amp; PORTFOLIO COMMANDS:
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
-          <div>
-            <button onClick={() => executeCommand('whoami')} className="text-emerald-400 font-semibold hover:underline cursor-pointer">
-              • whoami / about
-            </button>
-            <p className="text-slate-400">Deepak's bio, location &amp; summary</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
+          <div className="space-y-1.5">
+            <span className="text-cyan-400 font-bold uppercase tracking-wider block text-[10px]">
+              Linux / File System:
+            </span>
+            <p><span className="text-slate-200 font-semibold">• mkdir &lt;dir&gt;</span> — Create a new directory</p>
+            <p><span className="text-slate-200 font-semibold">• touch &lt;file&gt;</span> — Create an empty file</p>
+            <p><span className="text-slate-200 font-semibold">• cd &lt;dir&gt; | cd ..</span> — Change directory</p>
+            <p><span className="text-slate-200 font-semibold">• ls | dir</span> — List files and directories</p>
+            <p><span className="text-slate-200 font-semibold">• pwd</span> — Print current directory path</p>
+            <p><span className="text-slate-200 font-semibold">• cat &lt;file&gt;</span> — Read file contents</p>
+            <p><span className="text-slate-200 font-semibold">• rm &lt;file/dir&gt;</span> — Delete file or directory</p>
+            <p><span className="text-slate-200 font-semibold">• echo &lt;text&gt;</span> — Print or write to file</p>
+            <p><span className="text-slate-200 font-semibold">• clear</span> — Clear the screen</p>
           </div>
-          <div>
-            <button onClick={() => executeCommand('experience')} className="text-amber-400 font-semibold hover:underline cursor-pointer">
-              • experience / exp
-            </button>
-            <p className="text-slate-400">Zoos Global, Plootus &amp; InStat roles</p>
-          </div>
-          <div>
-            <button onClick={() => executeCommand('projects')} className="text-blue-400 font-semibold hover:underline cursor-pointer">
-              • projects / proj
-            </button>
-            <p className="text-slate-400">EKS IaC, Datadog suite, Route 53 migration</p>
-          </div>
-          <div>
-            <button onClick={() => executeCommand('skills')} className="text-cyan-400 font-semibold hover:underline cursor-pointer">
-              • skills / tech
-            </button>
-            <p className="text-slate-400">Cloud, containers, Terraform, Datadog stack</p>
-          </div>
-          <div>
-            <button onClick={() => executeCommand('certifications')} className="text-purple-400 font-semibold hover:underline cursor-pointer">
-              • certifications / certs
-            </button>
-            <p className="text-slate-400">Verified 3x Datadog certifications</p>
-          </div>
-          <div>
-            <button onClick={() => executeCommand('education')} className="text-indigo-400 font-semibold hover:underline cursor-pointer">
-              • education / edu
-            </button>
-            <p className="text-slate-400">MCA degree &amp; coursework from MAHGU</p>
-          </div>
-          <div>
-            <button onClick={() => executeCommand('architecture')} className="text-teal-400 font-semibold hover:underline cursor-pointer">
-              • architecture / arch
-            </button>
-            <p className="text-slate-400">Full visual cloud infrastructure diagram</p>
-          </div>
-          <div>
-            <button onClick={() => executeCommand('resume')} className="text-yellow-400 font-semibold hover:underline cursor-pointer">
-              • resume
-            </button>
-            <p className="text-slate-400">View &amp; download latest resume</p>
-          </div>
-          <div>
-            <button onClick={() => executeCommand('contact')} className="text-rose-400 font-semibold hover:underline cursor-pointer">
-              • contact
-            </button>
-            <p className="text-slate-400">Direct email, phone, and profile links</p>
-          </div>
-          <div>
-            <button onClick={() => executeCommand('kubectl')} className="text-teal-400 font-semibold hover:underline cursor-pointer">
-              • kubectl / pods
-            </button>
-            <p className="text-slate-400">Kubernetes cluster pods status</p>
-          </div>
-          <div>
-            <button onClick={() => executeCommand('datadog')} className="text-fuchsia-400 font-semibold hover:underline cursor-pointer">
-              • datadog / agent
-            </button>
-            <p className="text-slate-400">Datadog APM &amp; log pipeline telemetry</p>
-          </div>
-          <div>
-            <button onClick={() => executeCommand('ls')} className="text-slate-300 font-semibold hover:underline cursor-pointer">
-              • ls / dir
-            </button>
-            <p className="text-slate-400">List all portfolio virtual files</p>
-          </div>
-          <div>
-            <button onClick={() => executeCommand('clear')} className="text-slate-400 font-semibold hover:underline cursor-pointer">
-              • clear
-            </button>
-            <p className="text-slate-500">Clear terminal screen</p>
+          <div className="space-y-1.5">
+            <span className="text-amber-400 font-bold uppercase tracking-wider block text-[10px]">
+              DevOps &amp; Portfolio:
+            </span>
+            <p><span className="text-emerald-400 font-semibold">• whoami / about</span> — Bio, location &amp; KPIs</p>
+            <p><span className="text-amber-400 font-semibold">• experience / exp</span> — Work timeline</p>
+            <p><span className="text-blue-400 font-semibold">• projects / proj</span> — Cloud &amp; IaC projects</p>
+            <p><span className="text-cyan-400 font-semibold">• skills / tech</span> — Technical toolbox</p>
+            <p><span className="text-purple-400 font-semibold">• certs</span> — Datadog certifications</p>
+            <p><span className="text-indigo-400 font-semibold">• education</span> — MAHGU MCA background</p>
+            <p><span className="text-yellow-400 font-semibold">• resume</span> — Open Google Drive resume</p>
+            <p><span className="text-rose-400 font-semibold">• contact</span> — Email, phone, profiles</p>
+            <p><span className="text-teal-400 font-semibold">• kubectl</span> — Kubernetes pods table</p>
+            <p><span className="text-fuchsia-400 font-semibold">• datadog</span> — Datadog agent telemetry</p>
           </div>
         </div>
       </div>
@@ -883,9 +891,12 @@ export default function DevOpsTerminal() {
   const executeCommand = (cmdStr: string) => {
     const raw = cmdStr.trim();
     if (!raw) return;
-    const cmd = raw.toLowerCase();
 
-    if (cmd === 'clear') {
+    const parts = raw.split(/\s+/);
+    const mainCmd = parts[0].toLowerCase();
+    const args = parts.slice(1);
+
+    if (mainCmd === 'clear') {
       setEntries([]);
       setInput('');
       return;
@@ -893,31 +904,225 @@ export default function DevOpsTerminal() {
 
     let content: React.ReactNode = null;
 
-    if (cmd === 'whoami' || cmd === 'about' || cmd === 'bio' || cmd === 'cat about.txt') {
-      content = renderAbout();
-    } else if (cmd === 'experience' || cmd === 'exp' || cmd === 'work' || cmd === 'cat experience.log') {
-      content = renderExperience();
-    } else if (cmd === 'projects' || cmd === 'proj' || cmd === 'cat projects.json') {
-      content = renderProjects();
-    } else if (cmd === 'skills' || cmd === 'tech' || cmd === 'stack' || cmd === 'cat skills.sh') {
-      content = renderSkills();
-    } else if (cmd === 'certifications' || cmd === 'certs' || cmd === 'cert' || cmd === 'cat certifications.md') {
-      content = renderCertifications();
-    } else if (cmd === 'education' || cmd === 'edu' || cmd === 'degree' || cmd === 'cat education.txt') {
-      content = renderEducation();
-    } else if (cmd === 'architecture' || cmd === 'arch' || cmd === 'cloud' || cmd === 'cat architecture.diag') {
-      content = renderArchitecture();
-    } else if (cmd === 'resume' || cmd === 'cv' || cmd === 'cat resume.pdf') {
-      content = renderResume();
-    } else if (cmd === 'contact' || cmd === 'email' || cmd === 'phone' || cmd === 'cat contact.sh') {
-      content = renderContact();
-    } else if (cmd === 'kubectl' || cmd === 'kubectl get pods' || cmd === 'pods' || cmd === 'k8s') {
-      content = renderKubectl();
-    } else if (cmd === 'datadog' || cmd === 'datadog status' || cmd === 'dd' || cmd === 'agent') {
-      content = renderDatadog();
-    } else if (cmd === 'ls' || cmd === 'dir') {
+    // --- Standard Bash Commands ---
+    if (mainCmd === 'pwd') {
+      const fullPath = currentPath === '~' ? '/home/deepak' : `/home/deepak/${currentPath.replace('~/', '')}`;
+      content = <div className="text-slate-300 font-mono text-xs">{fullPath}</div>;
+    } else if (mainCmd === 'mkdir') {
+      if (args.length === 0) {
+        content = <div className="text-red-400 text-xs">mkdir: missing operand</div>;
+      } else {
+        const dirName = args[0].replace(/\/+$/, '');
+        const currentItems = vfs[currentPath] || {};
+
+        if (currentItems[dirName]) {
+          content = <div className="text-red-400 text-xs">mkdir: cannot create directory '{dirName}': File exists</div>;
+        } else {
+          const newPath = currentPath === '~' ? `~/${dirName}` : `${currentPath}/${dirName}`;
+          setVfs((prev) => ({
+            ...prev,
+            [currentPath]: {
+              ...prev[currentPath],
+              [dirName]: { name: dirName, type: 'dir' },
+            },
+            [newPath]: {},
+          }));
+          content = (
+            <div className="text-emerald-300 text-xs flex items-center gap-1.5">
+              <span>✓ Directory</span>
+              <span className="font-bold text-cyan-300">{dirName}/</span>
+              <span>created in {currentPath}</span>
+            </div>
+          );
+        }
+      }
+    } else if (mainCmd === 'touch') {
+      if (args.length === 0) {
+        content = <div className="text-red-400 text-xs">touch: missing file operand</div>;
+      } else {
+        const fileName = args[0];
+        setVfs((prev) => ({
+          ...prev,
+          [currentPath]: {
+            ...prev[currentPath],
+            [fileName]: { name: fileName, type: 'file', content: '' },
+          },
+        }));
+        content = (
+          <div className="text-emerald-300 text-xs flex items-center gap-1.5">
+            <span>✓ File</span>
+            <span className="font-bold text-slate-100">{fileName}</span>
+            <span>created in {currentPath}</span>
+          </div>
+        );
+      }
+    } else if (mainCmd === 'cd') {
+      const target = args[0] || '~';
+      if (target === '~' || target === '') {
+        setCurrentPath('~');
+        content = null;
+      } else if (target === '..') {
+        if (currentPath !== '~') {
+          const segments = currentPath.split('/');
+          segments.pop();
+          const parent = segments.join('/') || '~';
+          setCurrentPath(parent);
+          content = null;
+        } else {
+          content = null;
+        }
+      } else {
+        const cleanTarget = target.replace(/\/+$/, '');
+        const currentItems = vfs[currentPath] || {};
+        if (currentItems[cleanTarget] && currentItems[cleanTarget].type === 'dir') {
+          const newPath = currentPath === '~' ? `~/${cleanTarget}` : `${currentPath}/${cleanTarget}`;
+          setCurrentPath(newPath);
+          content = null;
+        } else if (currentItems[cleanTarget] && currentItems[cleanTarget].type === 'file') {
+          content = <div className="text-red-400 text-xs">cd: {cleanTarget}: Not a directory</div>;
+        } else {
+          content = <div className="text-red-400 text-xs">cd: {cleanTarget}: No such file or directory</div>;
+        }
+      }
+    } else if (mainCmd === 'ls' || mainCmd === 'dir') {
       content = renderLs();
-    } else if (cmd === 'help') {
+    } else if (mainCmd === 'cat') {
+      if (args.length === 0) {
+        content = <div className="text-red-400 text-xs">cat: missing file operand</div>;
+      } else {
+        const fileName = args[0];
+        const currentItems = vfs[currentPath] || {};
+        const item = currentItems[fileName];
+
+        if (!item) {
+          content = <div className="text-red-400 text-xs">cat: {fileName}: No such file or directory</div>;
+        } else if (item.type === 'dir') {
+          content = <div className="text-red-400 text-xs">cat: {fileName}: Is a directory</div>;
+        } else {
+          if (item.content === 'RENDER_ABOUT' || fileName === 'about.txt') {
+            content = renderAbout();
+          } else if (item.content === 'RENDER_EXPERIENCE' || fileName === 'experience.log') {
+            content = renderExperience();
+          } else if (item.content === 'RENDER_PROJECTS' || fileName === 'projects.json') {
+            content = renderProjects();
+          } else if (item.content === 'RENDER_SKILLS' || fileName === 'skills.sh') {
+            content = renderSkills();
+          } else if (item.content === 'RENDER_CERTS' || fileName === 'certifications.md') {
+            content = renderCertifications();
+          } else if (item.content === 'RENDER_EDUCATION' || fileName === 'education.txt') {
+            content = renderEducation();
+          } else if (item.content === 'RENDER_ARCHITECTURE' || fileName === 'architecture.diag') {
+            content = renderArchitecture();
+          } else if (item.content === 'RENDER_RESUME' || fileName === 'resume.pdf') {
+            content = renderResume();
+          } else if (item.content === 'RENDER_CONTACT' || fileName === 'contact.sh') {
+            content = renderContact();
+          } else if (typeof item.content === 'string') {
+            content = (
+              <pre className="text-slate-300 font-mono text-xs whitespace-pre-wrap bg-slate-900/60 p-2 rounded border border-slate-800">
+                {item.content || '(empty file)'}
+              </pre>
+            );
+          } else {
+            content = item.content;
+          }
+        }
+      }
+    } else if (mainCmd === 'echo') {
+      const rest = args.join(' ');
+      if (rest.includes('>')) {
+        const [textPart, filePart] = rest.split('>');
+        const cleanText = textPart.trim().replace(/^["']|["']$/g, '');
+        const targetFile = filePart.trim();
+        setVfs((prev) => ({
+          ...prev,
+          [currentPath]: {
+            ...prev[currentPath],
+            [targetFile]: { name: targetFile, type: 'file', content: cleanText },
+          },
+        }));
+        content = (
+          <div className="text-emerald-300 text-xs">
+            Written to <span className="font-bold text-slate-100">{targetFile}</span>
+          </div>
+        );
+      } else {
+        content = <div className="text-slate-200 text-xs font-mono">{rest.replace(/^["']|["']$/g, '')}</div>;
+      }
+    } else if (mainCmd === 'rm') {
+      const targetName = args[args.length - 1];
+      if (!targetName) {
+        content = <div className="text-red-400 text-xs">rm: missing operand</div>;
+      } else {
+        const clean = targetName.replace(/\/+$/, '');
+        const currentItems = vfs[currentPath] || {};
+        if (currentItems[clean]) {
+          setVfs((prev) => {
+            const nextFolder = { ...prev[currentPath] };
+            delete nextFolder[clean];
+            return { ...prev, [currentPath]: nextFolder };
+          });
+          content = <div className="text-amber-300 text-xs">Removed '{clean}'</div>;
+        } else {
+          content = <div className="text-red-400 text-xs">rm: cannot remove '{clean}': No such file or directory</div>;
+        }
+      }
+    } else if (mainCmd === 'date') {
+      content = <div className="text-slate-300 font-mono text-xs">{new Date().toString()}</div>;
+    } else if (mainCmd === 'uname') {
+      content = <div className="text-slate-300 font-mono text-xs">Linux aws-eks-worker-fleet 6.5.0-aws #42-Ubuntu SMP x86_64 GNU/Linux</div>;
+    } else if (mainCmd === 'uptime') {
+      content = <div className="text-slate-300 font-mono text-xs">up 45 days, 14:22, 1 user, load average: 0.08, 0.05, 0.01 (99.99% SLA)</div>;
+    } else if (mainCmd === 'history') {
+      content = (
+        <div className="space-y-0.5 text-xs font-mono text-slate-300">
+          {cmdHistory.map((c, i) => (
+            <div key={i} className="flex gap-3">
+              <span className="text-slate-600 w-6 text-right">{i + 1}</span>
+              <span>{c}</span>
+            </div>
+          ))}
+        </div>
+      );
+    } else if (mainCmd === 'sudo') {
+      if (args.join(' ').includes('rm -rf /')) {
+        content = (
+          <div className="text-red-400 text-xs">
+            [sudo] nice try! Deepak's AWS EKS clusters are protected with IAM boundaries, IRSA, and automated Terraform state lock 🛡️
+          </div>
+        );
+      } else {
+        content = (
+          <div className="text-emerald-300 text-xs">
+            [sudo] Root privilege granted for deepak. (Running: {args.join(' ')})
+          </div>
+        );
+      }
+    }
+    // --- Portfolio Commands ---
+    else if (mainCmd === 'whoami' || mainCmd === 'about' || mainCmd === 'bio') {
+      content = renderAbout();
+    } else if (mainCmd === 'experience' || mainCmd === 'exp' || mainCmd === 'work') {
+      content = renderExperience();
+    } else if (mainCmd === 'projects' || mainCmd === 'proj') {
+      content = renderProjects();
+    } else if (mainCmd === 'skills' || mainCmd === 'tech' || mainCmd === 'stack') {
+      content = renderSkills();
+    } else if (mainCmd === 'certifications' || mainCmd === 'certs' || mainCmd === 'cert') {
+      content = renderCertifications();
+    } else if (mainCmd === 'education' || mainCmd === 'edu' || mainCmd === 'degree') {
+      content = renderEducation();
+    } else if (mainCmd === 'architecture' || mainCmd === 'arch' || mainCmd === 'cloud') {
+      content = renderArchitecture();
+    } else if (mainCmd === 'resume' || mainCmd === 'cv') {
+      content = renderResume();
+    } else if (mainCmd === 'contact' || mainCmd === 'email' || mainCmd === 'phone') {
+      content = renderContact();
+    } else if (mainCmd === 'kubectl' || mainCmd === 'pods' || mainCmd === 'k8s') {
+      content = renderKubectl();
+    } else if (mainCmd === 'datadog' || mainCmd === 'dd' || mainCmd === 'agent') {
+      content = renderDatadog();
+    } else if (mainCmd === 'help') {
       content = renderHelp();
     } else {
       content = (
@@ -937,7 +1142,7 @@ export default function DevOpsTerminal() {
     setEntries((prev) => [
       ...prev,
       {
-        id: `${cmd}-${Date.now()}`,
+        id: `${mainCmd}-${Date.now()}`,
         command: raw,
         content,
       },
@@ -972,6 +1177,7 @@ export default function DevOpsTerminal() {
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
+      const currentItems = Object.keys(vfs[currentPath] || {});
       const available = [
         'whoami',
         'about',
@@ -986,8 +1192,16 @@ export default function DevOpsTerminal() {
         'kubectl',
         'datadog',
         'ls',
+        'pwd',
+        'mkdir',
+        'touch',
+        'rm',
+        'cd',
+        'cat',
+        'echo',
         'help',
         'clear',
+        ...currentItems,
       ];
       const match = available.find((c) => c.startsWith(input.toLowerCase()));
       if (match) setInput(match);
@@ -1029,7 +1243,7 @@ export default function DevOpsTerminal() {
             className="w-3 h-3 rounded-full bg-emerald-500 hover:opacity-80 transition-opacity cursor-pointer"
           />
           <span className="text-slate-400 text-xs font-semibold ml-2 hidden sm:inline">
-            deepak@aws-eks-cluster: ~ (bash)
+            deepak@aws-eks-cluster: {currentPath} (bash)
           </span>
         </div>
 
@@ -1081,7 +1295,7 @@ export default function DevOpsTerminal() {
           <div key={entry.id} className="space-y-1">
             {entry.command !== 'system-init' && (
               <div className="flex items-center gap-2 text-slate-200 font-semibold pt-1">
-                <span className="text-emerald-400">deepak@aws-eks:~$</span>
+                <span className="text-emerald-400">deepak@aws-eks:{currentPath}$</span>
                 <span className="text-cyan-300 font-bold">{entry.command}</span>
               </div>
             )}
@@ -1089,16 +1303,16 @@ export default function DevOpsTerminal() {
           </div>
         ))}
 
-        {/* Prompt line */}
+        {/* Prompt line with dynamic path */}
         <div className="flex items-center gap-2 pt-2 text-slate-200">
-          <span className="text-emerald-400 font-semibold">deepak@aws-eks:~$</span>
+          <span className="text-emerald-400 font-semibold">deepak@aws-eks:{currentPath}$</span>
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="type 'about', 'experience', 'projects', 'skills', 'certs', 'resume', 'help'..."
+            placeholder="try 'mkdir deepak', 'cd deepak', 'touch test.txt', 'ls', 'whoami'..."
             className="flex-1 bg-transparent border-none outline-none text-slate-100 placeholder:text-slate-600 font-mono text-xs focus:ring-0"
           />
         </div>
