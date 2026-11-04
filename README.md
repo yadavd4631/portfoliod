@@ -26,11 +26,14 @@ portfoliod/
 │   └── globals.css        # Global styles & Tailwind
 ├── components/
 │   ├── IntroScreen.tsx     # Visitor counter & animated intro
+│   ├── SystemStatus.tsx    # Live AWS & cluster operational status pill
 │   ├── about-section.tsx   # Bio, social links & resume download
+│   ├── DevOpsMetrics.tsx   # 4-card production impact & SLA metrics
+│   ├── DevOpsTerminal.tsx  # Interactive bash terminal (kubectl, datadog, terraform)
 │   ├── Experience.tsx      # Work experience timeline
 │   ├── Certifications.tsx  # Datadog certifications
+│   ├── Projects.tsx        # Production DevOps & cloud case studies
 │   ├── Skills.tsx          # Categorized cloud & DevOps skills
-│   ├── Projects.tsx        # Featured projects & architecture
 │   ├── Education.tsx       # Academic background & coursework
 │   ├── Contact.tsx         # Contact links & email
 │   └── Footer.tsx          # Footer
