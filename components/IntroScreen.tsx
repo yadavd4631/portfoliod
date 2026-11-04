@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function getOrdinalNum(n: number) {
+  if (typeof n !== 'number' || isNaN(n) || n <= 0) return '1st';
   const s = ["th", "st", "nd", "rd"];
   const v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
@@ -13,20 +14,45 @@ export default function IntroScreen() {
   const [show, setShow] = useState(true);
 
   useEffect(() => {
-    // Fetch and increment the count
-    fetch("https://api.counterapi.dev/v1/deepakyadav/portfolio/up")
-      .then((res) => res.json())
-      .then((data) => {
-        setCount(data.count);
-      })
-      .catch(() => setCount(1)); // Fallback if API fails
+    let isMounted = true;
+
+    async function fetchVisitorCount() {
+      try {
+        const res = await fetch(
+          "https://countapi.mileshilliard.com/api/v1/hit/deepakyadav-portfolio-visits"
+        );
+        if (!res.ok) throw new Error("Counter response not ok");
+        const data = await res.json();
+        const numericVal = Number(data?.value);
+        if (typeof numericVal === 'number' && !isNaN(numericVal) && numericVal > 0) {
+          if (isMounted) setCount(numericVal);
+          return;
+        }
+        throw new Error("Invalid count value");
+      } catch {
+        // Fallback: use localStorage counter or fallback default
+        try {
+          const stored = localStorage.getItem("portfolio_visit_count");
+          const nextCount = stored ? Number(stored) + 1 : 142;
+          localStorage.setItem("portfolio_visit_count", String(nextCount));
+          if (isMounted) setCount(nextCount);
+        } catch {
+          if (isMounted) setCount(142);
+        }
+      }
+    }
+
+    fetchVisitorCount();
 
     // Hide intro after 3.5 seconds
     const timer = setTimeout(() => {
       setShow(false);
-    }, 4000);
+    }, 3800);
 
-    return () => clearTimeout(timer);
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
   }, []);
 
   // Prevent scrolling while intro is active
@@ -58,7 +84,7 @@ export default function IntroScreen() {
             </motion.p>
             
             <div className="h-32 flex items-center justify-center">
-              {count !== null ? (
+              {typeof count === 'number' && !isNaN(count) ? (
                 <motion.div
                   initial={{ scale: 0.5, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
