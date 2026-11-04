@@ -4,9 +4,71 @@ import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 
 const projects = [
   {
+    title: "AWS EKS Production Platform & Terraform Modules",
+    period: "June 2026 – Present",
+    role: "DevOps Engineer",
+    badge: "Cloud Infrastructure",
+    badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+    description:
+      "Architected reusable Terraform modules for provisioning multi-AZ VPC networking, Amazon EKS clusters, and IAM Roles for Service Accounts (IRSA). Configured AWS Application Load Balancer (ALB) ingress controllers and automated SSL/TLS certificate rotation via cert-manager. Diagnosed and resolved production EKS issues including ImagePullBackOff, node readiness, and subnet misconfigurations.",
+    tech: [
+      "Terraform",
+      "AWS EKS",
+      "Kubernetes",
+      "Helm",
+      "VPC / Subnets",
+      "IAM & IRSA",
+      "ALB Ingress",
+      "Cert-Manager",
+    ],
+    github: null,
+    live: null,
+  },
+  {
+    title: "Enterprise Datadog Observability & APM Suite",
+    period: "June 2026 – Present",
+    role: "Observability Engineer · Zoos Global",
+    badge: "Observability",
+    badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+    description:
+      "Automated Datadog agent rollouts across heterogeneous Linux fleets using Ansible playbooks, replacing manual per-server installations. Configured APM distributed tracing, OpenTelemetry ingestion, custom log pipelines, and anomaly detection monitors. Built real-time SLI/SLO dashboards for production microservices to significantly reduce incident MTTR.",
+    tech: [
+      "Datadog APM",
+      "Distributed Tracing",
+      "Ansible Automation",
+      "Log Pipelines",
+      "Linux Fleet",
+      "CloudWatch",
+      "SLO / SLI",
+    ],
+    github: null,
+    live: null,
+  },
+  {
+    title: "Zero-Downtime AWS Route 53 Production Domain Migration",
+    period: "April 2025 – June 2026",
+    role: "DevOps & Infrastructure Lead · Plootus",
+    badge: "Cloud Networking",
+    badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    description:
+      "Planned and executed a seamless, zero-downtime cutover between production domains on AWS Route 53 (v1.plootus.ai to plootus.ai). Managed ACM SSL/TLS termination, automated DNS health checks, CORS policies, OAuth redirect cutover, and deployment workflows with 0 minutes of downtime and 100% session preservation.",
+    tech: [
+      "AWS Route 53",
+      "ACM SSL/TLS",
+      "Nginx Reverse Proxy",
+      "DNS Failover",
+      "CORS & Security",
+      "Docker",
+    ],
+    github: null,
+    live: null,
+  },
+  {
     title: "Asterisks — Gym Management SaaS",
     period: "February 2026 – July 2026",
     role: "Co-founder / Engineering",
+    badge: "Shipped SaaS",
+    badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/20",
     description:
       "Built and shipped a multi-tenant gym management SaaS (WhatsApp-native, React + C# backend) for small Indian gym owners. Owned end-to-end product architecture, cloud deployment, and hosting decisions on Azure App Service with Azure SQL, integrating the WhatsApp Business Cloud API and reaching paying early customers.",
     tech: [
@@ -14,12 +76,11 @@ const projects = [
       "C# Backend",
       "Azure App Service",
       "Azure SQL",
-      "WhatsApp Business Cloud API",
+      "WhatsApp Business API",
       "Multi-tenant Architecture",
     ],
     github: null,
     live: "https://www.asterisks.app/",
-    badge: "Shipped",
   },
 ];
 
@@ -45,7 +106,11 @@ export default function Projects() {
                 {project.title}
               </h3>
               {project.badge && (
-                <span className="text-[10px] uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full font-semibold">
+                <span
+                  className={`text-[10px] uppercase tracking-wider ${
+                    project.badgeColor || 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                  } border px-2 py-0.5 rounded-full font-semibold`}
+                >
                   {project.badge}
                 </span>
               )}

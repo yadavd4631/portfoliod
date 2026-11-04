@@ -1,5 +1,8 @@
 import IntroScreen from '@/components/IntroScreen';
+import SystemStatus from '@/components/SystemStatus';
 import AboutSection from '@/components/about-section';
+import DevOpsMetrics from '@/components/DevOpsMetrics';
+import DevOpsTerminal from '@/components/DevOpsTerminal';
 import Experience from '@/components/Experience';
 import Certifications from '@/components/Certifications';
 import Education from '@/components/Education';
@@ -12,12 +15,15 @@ export default function Home() {
   return (
     <>
       <IntroScreen />
-      <div className="flex flex-col mt-10 w-full text-slate-300 mx-auto overflow-hidden">
+      <div className="flex flex-col mt-4 w-full text-slate-300 mx-auto overflow-hidden">
+        <SystemStatus />
         <AboutSection />
+        <DevOpsMetrics />
+        <DevOpsTerminal />
         <Experience />
         <Certifications />
-        <Skills />
         <Projects />
+        <Skills />
         <Education />
         <Contact />
         <Footer />
